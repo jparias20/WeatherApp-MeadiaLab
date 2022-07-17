@@ -1,0 +1,8 @@
+WeatherApp.xcodeproj/xcuserdata
+WeatherApp.xcworkspace/xcuserdata
+
+Pods/
+Podfile.lock
+contents.xcworkspacedata
+IDEWorkspaceChecks.plist
+UserInterfaceState.xcuserstate
