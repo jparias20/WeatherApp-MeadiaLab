@@ -1,0 +1,7 @@
+platform :ios, '15.0'
+
+target 'Example' do
+  pod 'WeatherAppConnectivity', :path => '..'
+  pod 'Alamofire'
+  pod 'AlamofireImage'
+end
