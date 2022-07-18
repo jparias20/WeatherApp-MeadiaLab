@@ -10,7 +10,7 @@ extension UIImageView {
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         
         activityIndicator.style = .medium
-        activityIndicator.color = .black
+        activityIndicator.color = .white
         activityIndicator.startAnimating()
         addSubview(activityIndicator)
         NSLayoutConstraint.activate([
