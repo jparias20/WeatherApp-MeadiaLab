@@ -1,0 +1,5 @@
+// English
+
+"low" = "Low: %@";
+"high" = "High: %@";
+"wind" = "Wind: %@ (%@)";
