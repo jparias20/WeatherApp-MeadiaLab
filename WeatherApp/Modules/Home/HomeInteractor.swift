@@ -5,8 +5,6 @@ import Combine
 protocol HomeInteractorProtocol {
     
     var weatherObservable: AnyPublisher<Weather?, Never> { get }
-    
-    func viewDidLoad()
 }
 
 final class HomeInteractor {
@@ -62,10 +60,6 @@ extension HomeInteractor: HomeInteractorProtocol {
     
     var weatherObservable: AnyPublisher<Weather?, Never> {
         weatherPublisher.eraseToAnyPublisher()
-    }
-    
-    func viewDidLoad() {
-        locationManager.validateStatus()
     }
 }
 

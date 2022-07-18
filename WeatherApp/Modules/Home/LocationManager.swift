@@ -5,8 +5,6 @@ import Combine
 protocol LocationManagerProtocol {
     
     var locationObservable: AnyPublisher<CurrentLocation?, Never> { get }
-    
-    func validateStatus()
 }
 
 struct CurrentLocation {
@@ -38,42 +36,44 @@ extension LocationManager: LocationManagerProtocol {
     var locationObservable: AnyPublisher<CurrentLocation?, Never> {
         locationPublisher.eraseToAnyPublisher()
     }
+}
+
+// MARK: - CLLocationManagerDelegate
+extension LocationManager: CLLocationManagerDelegate {
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        validateStatus()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard locationPublisher.value == nil, let location = locations.last else { return }
+        fetchedLocation(location: location)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("location didFailWithError: ", error.localizedDescription)
+    }
+}
+
+private extension LocationManager {
     
     func validateStatus() {
         let status = locationManager.authorizationStatus
         switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             locationManager.requestLocation()
+            guard let location = locationManager.location else { return }
+            fetchedLocation(location: location)
         default:
             locationPublisher.send(nil)
             locationManager.requestAlwaysAuthorization()
         }
     }
-}
-
-// MARK: - CLLocationManagerDelegate
-extension LocationManager: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard locationPublisher.value == nil, let currentLocation = locationManager.location else {
-
-#if DEBUG
-            let latitude = Float(34.0194704)
-            let longitude = Float(-118.4912273)
-            locationPublisher.send(CurrentLocation(latitude: latitude, longitude: longitude))
-#endif
-            
-            return
-        }
-        
-        let latitude = Float(currentLocation.coordinate.latitude)
-        let longitude = Float(currentLocation.coordinate.longitude)
+    func fetchedLocation(location: CLLocation) {
+        let latitude = Float(location.coordinate.latitude)
+        let longitude = Float(location.coordinate.longitude)
         
         locationPublisher.send(CurrentLocation(latitude: latitude, longitude: longitude))
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        
-        print("location didFailWithError: ", error.localizedDescription)
     }
 }

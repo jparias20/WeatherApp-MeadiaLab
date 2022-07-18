@@ -44,7 +44,6 @@ extension HomePresenter: HomePresenterProtocol {
     
     func viewDidLoad() {
         bind()
-        interactor.viewDidLoad()
     }
 }
 
