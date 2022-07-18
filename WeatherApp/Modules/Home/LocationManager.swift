@@ -55,7 +55,16 @@ extension LocationManager: LocationManagerProtocol {
 extension LocationManager: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard locationPublisher.value == nil, let currentLocation = locationManager.location else { return }
+        guard locationPublisher.value == nil, let currentLocation = locationManager.location else {
+
+#if DEBUG
+            let latitude = Float(34.0194704)
+            let longitude = Float(-118.4912273)
+            locationPublisher.send(CurrentLocation(latitude: latitude, longitude: longitude))
+#endif
+            
+            return
+        }
         
         let latitude = Float(currentLocation.coordinate.latitude)
         let longitude = Float(currentLocation.coordinate.longitude)
@@ -64,6 +73,7 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        
         print("location didFailWithError: ", error.localizedDescription)
     }
 }

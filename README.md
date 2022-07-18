@@ -14,7 +14,7 @@ http://openweathermap.org/img/wn/10d@2x.png
 ## Prerequisites
 Xcode 13.4.1
 Cocoa Pods 1.11.3
-iOS 15.0
+iPhone iOS 15.0 
 
 ## Compile
 On the root do a `pod install`
